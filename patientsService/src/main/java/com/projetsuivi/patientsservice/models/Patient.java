@@ -1,8 +1,9 @@
-package models;
+package com.projetsuivi.patientsservice.models;
 
-import constants.Genras;
 
 import java.time.LocalDateTime;
+
+import com.projetsuivi.patientsservice.constants.Genras;
 import lombok.*;
 
 @AllArgsConstructor

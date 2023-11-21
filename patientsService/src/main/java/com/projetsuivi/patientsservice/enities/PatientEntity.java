@@ -1,9 +1,8 @@
-package enities;
+package com.projetsuivi.patientsservice.enities;
 
-import constants.Genras;
+import com.projetsuivi.patientsservice.constants.Genras;
 import jakarta.persistence.*;
 import lombok.*;
-import models.Adresse;
 
 import java.time.LocalDateTime;
 
@@ -18,24 +17,24 @@ public class PatientEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "FirstName", nullable = false)
+    @Column(name = "firstName", nullable = false)
     @NonNull
     private String firstName;
 
-    @Column(name = "FirstName", nullable = false)
+    @Column(name = "lastName", nullable = false)
     @NonNull
     private String lastName;
 
-    @Column(name = "FirstName", nullable = false)
+    @Column(name = "birthdate", nullable = false)
     @NonNull
     private LocalDateTime birthdate;
 
-    @Column(name = "FirstName", nullable = false)
+    @Column(name = "genra", nullable = false)
     @NonNull
     private Genras genra;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "adresse_id")
     private AdresseEntity adresse;
 
     @Column(name = "PhoneNumber")

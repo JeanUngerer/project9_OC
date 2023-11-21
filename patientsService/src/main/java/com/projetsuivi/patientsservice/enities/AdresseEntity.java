@@ -1,9 +1,8 @@
-package enities;
+package com.projetsuivi.patientsservice.enities;
 
 import jakarta.persistence.*;
 import jakarta.ws.rs.ext.ParamConverter;
 import lombok.*;
-import models.Patient;
 import org.hibernate.annotations.Fetch;
 
 import java.util.List;
@@ -17,6 +16,7 @@ public class AdresseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "Number", nullable = false)

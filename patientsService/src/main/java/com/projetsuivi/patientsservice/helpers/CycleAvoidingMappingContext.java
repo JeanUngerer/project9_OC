@@ -1,4 +1,4 @@
-package helpers;
+package com.projetsuivi.patientsservice.helpers;
 
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.MappingTarget;

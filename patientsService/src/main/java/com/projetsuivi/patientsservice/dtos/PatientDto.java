@@ -1,8 +1,8 @@
-package dtos;
+package com.projetsuivi.patientsservice.dtos;
 
-import constants.Genras;
+import com.projetsuivi.patientsservice.constants.Genras;
+import com.projetsuivi.patientsservice.models.Adresse;
 import lombok.*;
-import models.Adresse;
 
 import java.time.LocalDateTime;
 

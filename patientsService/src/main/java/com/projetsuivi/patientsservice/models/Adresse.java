@@ -1,7 +1,6 @@
-package dtos;
+package com.projetsuivi.patientsservice.models;
 
 import lombok.*;
-import models.Patient;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AdresseDto {
+public class Adresse {
 
     private Long id;
 
