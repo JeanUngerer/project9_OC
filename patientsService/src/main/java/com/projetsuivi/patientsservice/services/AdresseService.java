@@ -54,6 +54,7 @@ public class AdresseService {
         try {
             log.info("createAdresse");
             Adresse adresse = adresseMapper.dtoToModel(dto);
+            adresse.setId(null);
             adresseRepository.save(adresseMapper.modelToEntity(adresse));
             return adresse;
         } catch (Exception e) {
