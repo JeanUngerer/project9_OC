@@ -35,6 +35,11 @@ public class NotesController {
         return ResponseEntity.ok(notesMapper.modelsToDtos(notesService.findAllNotes()));
     }
 
+    @GetMapping("/notes/patient/[id}")
+    public ResponseEntity<List<NotesDto>> getNotesByPatientId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(notesMapper.modelsToDtos(notesService.findAllNotesByPatientId(id)));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<NotesDto> getNotesById(@PathVariable("id") String id) {
         return ResponseEntity.ok(notesMapper.modelToDto(notesService.findNotesById(id)));
