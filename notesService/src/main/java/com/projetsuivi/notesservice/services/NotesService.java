@@ -38,6 +38,18 @@ public class NotesService {
         }
     }
 
+    public List<Notes> findAllNotesByPatientId(Long id) {
+        try {
+            log.info("findAllNotes");
+            List<Notes> notesList = new ArrayList<Notes>();
+            notesRepository.findAllNotesByPatientId(id).forEach(ct -> notesList.add(notesMapper.documentToModel(ct)));
+            return  notesList;
+        } catch (Exception e) {
+            log.error("We could not find all notes: " + e.getMessage());
+            throw new ExceptionHandler("We could not find your notess");
+        }
+    }
+
     public Notes findNotesById(String id) {
         try {
             log.info("findNotesById - id: " + id.toString());
