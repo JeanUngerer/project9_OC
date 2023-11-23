@@ -20,12 +20,12 @@ public interface NotesMapper {
     NotesDocument modelToDocument(Notes Notes);
     List<NotesDocument> modelsToEntities(List<Notes> Notess);
 
-    Notes entityToModel(NotesDocument entity);
+    Notes documentToModel(NotesDocument document);
 
 
     List<Notes> entitiesToModel(List<NotesDocument> entities);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateNotesFromModel(Notes model, @MappingTarget NotesDocument entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+    void updateNotesFromModel(Notes model, @MappingTarget NotesDocument document, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     void updateNotesFromDto(NotesDto dto, @MappingTarget Notes Notes, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

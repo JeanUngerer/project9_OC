@@ -54,6 +54,7 @@ public class PatientService {
         try {
             log.info("createPatient");
             Patient patient = patientMapper.dtoToModel(dto);
+            patient.setId(null);
             patientRepository.save(patientMapper.modelToEntity(patient));
             return patient;
         } catch (Exception e) {

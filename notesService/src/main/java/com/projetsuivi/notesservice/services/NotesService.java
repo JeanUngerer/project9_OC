@@ -30,7 +30,7 @@ public class NotesService {
         try {
             log.info("findAllNotes");
             List<Notes> notesList = new ArrayList<Notes>();
-            notesRepository.findAll().forEach(ct -> notesList.add(notesMapper.entityToModel(ct)));
+            notesRepository.findAll().forEach(ct -> notesList.add(notesMapper.documentToModel(ct)));
             return  notesList;
         } catch (Exception e) {
             log.error("We could not find all notes: " + e.getMessage());
@@ -41,7 +41,7 @@ public class NotesService {
     public Notes findNotesById(String id) {
         try {
             log.info("findNotesById - id: " + id.toString());
-            Notes notes = notesMapper.entityToModel(notesRepository.findById(id).orElseThrow(()
+            Notes notes = notesMapper.documentToModel(notesRepository.findById(id).orElseThrow(()
                     -> new ExceptionHandler("We didn't find your notes")));
             return notes;
         } catch (Exception e) {
@@ -54,6 +54,7 @@ public class NotesService {
         try {
             log.info("createNotes");
             Notes notes = notesMapper.dtoToModel(dto);
+            notes.set_id(null);
             notesRepository.save(notesMapper.modelToDocument(notes));
             return notes;
         } catch (Exception e) {
@@ -64,7 +65,7 @@ public class NotesService {
     public Notes updateNotes(NotesDto dto) {
         try {
             log.info("updateNotes - id: " + dto.get_id().toString());
-            Notes notes = notesMapper.entityToModel(notesRepository.findById(dto.get_id()).orElseThrow(()
+            Notes notes = notesMapper.documentToModel(notesRepository.findById(dto.get_id()).orElseThrow(()
                     -> new ExceptionHandler("We could not find your notes")));
             notesMapper.updateNotesFromDto(dto, notes, new CycleAvoidingMappingContext());
             notesRepository.save(notesMapper.modelToDocument(notes));
@@ -78,7 +79,7 @@ public class NotesService {
     public String deleteNotes(String id) {
         try {
             log.info("deleteNotes - id: " + id.toString());
-            Notes notes = notesMapper.entityToModel(notesRepository.findById(id).orElseThrow(()
+            Notes notes = notesMapper.documentToModel(notesRepository.findById(id).orElseThrow(()
                     -> new ExceptionHandler("We could not find your notes")));
             notesRepository.delete(notesMapper.modelToDocument(notes));
             return "Notes deleted";
