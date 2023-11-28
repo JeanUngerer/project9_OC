@@ -42,7 +42,7 @@ public class SpringSecurityConfig {
                     .authorizeExchange(authz ->
                                     authz
 
-                                            .pathMatchers("/home", "/token").permitAll()
+                                            .pathMatchers("/home", "/token", "/register").permitAll()
                                             .anyExchange().authenticated()
                                             .and().authenticationManager(reactiveAuthenticationManager())
                     )

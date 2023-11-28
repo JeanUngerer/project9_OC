@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-@RequestMapping("patient")
+@RequestMapping("patients/patient")
 public class PatientController {
 
     @Autowired

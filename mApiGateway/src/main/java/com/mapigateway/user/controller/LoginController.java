@@ -1,12 +1,14 @@
 package com.mapigateway.user.controller;
 
 
+import com.mapigateway.user.model.MyUser;
 import com.mapigateway.user.service.TokenService;
 import com.mapigateway.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +37,16 @@ public class LoginController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .build();
+    }
+
+    @PutMapping("/register")
+    @Transactional
+    public ResponseEntity<Void> registerUser(MyUser userDto) {
+
+        userService.createUser(userDto);
+        log.debug("registered user : " + userDto.getLogin());
+
+        return ResponseEntity.ok().build();
     }
 
 

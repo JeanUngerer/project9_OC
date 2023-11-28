@@ -66,6 +66,7 @@ public class UserService implements ReactiveUserDetailsService {
 
             myUser.setPassword(pass);
             myUser.set_id(null);
+            myUser.setRoles("ROLE_USER");
             log.info("create user - userDTO: " + myUser.toString());
 
 
