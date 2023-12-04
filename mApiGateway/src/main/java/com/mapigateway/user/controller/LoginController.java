@@ -10,9 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.Disposable;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @Slf4j
+@CrossOrigin("*")
+@RequestMapping("api")
 public class LoginController {
 
     private final TokenService tokenService;
@@ -25,6 +30,7 @@ public class LoginController {
     }
 
 
+    @CrossOrigin("*")
     @PostMapping("/token")
     public ResponseEntity<Void> token(Authentication authentication) {
         log.debug("Token requested for user : " + authentication.getName());
@@ -39,16 +45,57 @@ public class LoginController {
                 .build();
     }
 
-    @PutMapping("/register")
+    @CrossOrigin("*")
+    @PostMapping("/register")
     @Transactional
-    public ResponseEntity<Void> registerUser(MyUser userDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody MyUser userDto) {
 
-        userService.createUser(userDto);
-        log.debug("registered user : " + userDto.getLogin());
+        AtomicReference<Boolean> created = new AtomicReference<>(true);
 
-        return ResponseEntity.ok().build();
+        Disposable disposable = userService.createUser(userDto).subscribe(item -> {
+            if(item == null){
+                created.set(false);
+            }
+
+            log.debug("registered user : " + item);
+        });
+        disposable.dispose();
+
+        if(created.get()){
+            return ResponseEntity.ok().build();
+        }
+
+        return (ResponseEntity<Void>) ResponseEntity.badRequest();
+
+
     }
 
+    /*
+
+    import io.reactivex.Observable;
+    import io.reactivex.disposables.Disposable;
+
+    public class Main {
+        public static void main(String[] args) {
+            // Créer un Observable (source de données)
+            Observable<String> observable = Observable.just("Hello", "World");
+
+            // S'abonner à l'Observable et obtenir un Disposable
+            Disposable disposable = observable.subscribe(
+                    // onNext
+                    item -> System.out.println("Received: " + item),
+                    // onError
+                    error -> System.err.println("Error: " + error),
+                    // onComplete
+                    () -> System.out.println("Complete")
+            );
+
+            // Vous pouvez utiliser le Disposable pour interrompre l'abonnement si nécessaire
+            // disposable.dispose();
+        }
+    }
+
+*/
 
 
 

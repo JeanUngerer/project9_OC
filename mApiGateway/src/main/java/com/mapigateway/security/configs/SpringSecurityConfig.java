@@ -7,12 +7,18 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -37,12 +43,12 @@ public class SpringSecurityConfig {
         @Bean
         public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
             http
-                    .cors(crs -> crs.disable())
+                    .cors(withDefaults())
                     .csrf(csrf -> csrf.disable())
                     .authorizeExchange(authz ->
                                     authz
 
-                                            .pathMatchers("/home", "/token", "/register").permitAll()
+                                            .pathMatchers("/api/home", "/api/token", "/api/register").permitAll()
                                             .anyExchange().authenticated()
                                             .and().authenticationManager(reactiveAuthenticationManager())
                     )
@@ -61,48 +67,25 @@ public class SpringSecurityConfig {
         authenticationManager.setPasswordEncoder(passwordEncoder);
         return authenticationManager;
     }
-/*
 
     @Bean
-    public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.applyPermitDefaultValues();
+        configuration.addExposedHeader("Token");
+        configuration.addAllowedMethod(HttpMethod.PUT);
+        configuration.addAllowedMethod(HttpMethod.POST);
+        configuration.addAllowedMethod(HttpMethod.DELETE);
+        configuration.addAllowedMethod(HttpMethod.GET);
 
-        return http
-                .authorizeExchange()
-                .pathMatchers("/home/**").authenticated()
-                .anyExchange().permitAll().and()
-                .csrf().disable()
-                .build();
+        configuration.setAllowCredentials(true);
 
-        return http
-                .cors().disable()
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login**", "/home", "**").permitAll()
-                        //.anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .userDetailsService(myUserDetailsService)
+        configuration.setAllowedOrigins( Collections.singletonList( "*" ) );
+        configuration.addAllowedOrigin ( "*" );
 
-                .formLogin(withDefaults())
-                .httpBasic(withDefaults())
-                .build();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
     }
-*/
-
-    /*
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        http
-                .authorizeExchange()
-                .pathMatchers("/register", "/login**", "/home", "/token").permitAll() // Allow access to public endpoints
-                .anyExchange().authenticated() // Require authentication for all other endpoints
-                .and()
-                .formLogin() // Enable form-based login
-                .and()
-                .httpBasic(); // Enable basic authentication
-
-        return http.build();
-    }
-*/
 
 }
