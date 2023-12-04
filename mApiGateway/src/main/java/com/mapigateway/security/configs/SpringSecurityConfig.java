@@ -14,24 +14,23 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 
-import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
 @EnableWebFluxSecurity
-//@EnableReactiveMethodSecurity
 @Getter
 @Setter
 public class SpringSecurityConfig {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
     private final UserService myUserDetailsService;
 
     public SpringSecurityConfig(UserService myUserDetailsService) {
@@ -43,7 +42,7 @@ public class SpringSecurityConfig {
         @Bean
         public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
             http
-                    .cors(withDefaults())
+                    .cors(corsSpec -> corsSpec.configurationSource( corsConfigurationSource))
                     .csrf(csrf -> csrf.disable())
                     .authorizeExchange(authz ->
                                     authz
@@ -68,24 +67,6 @@ public class SpringSecurityConfig {
         return authenticationManager;
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.applyPermitDefaultValues();
-        configuration.addExposedHeader("Token");
-        configuration.addAllowedMethod(HttpMethod.PUT);
-        configuration.addAllowedMethod(HttpMethod.POST);
-        configuration.addAllowedMethod(HttpMethod.DELETE);
-        configuration.addAllowedMethod(HttpMethod.GET);
 
-        configuration.setAllowCredentials(true);
-
-        configuration.setAllowedOrigins( Collections.singletonList( "*" ) );
-        configuration.addAllowedOrigin ( "*" );
-
-        source.registerCorsConfiguration("/**",configuration);
-        return source;
-    }
 
 }

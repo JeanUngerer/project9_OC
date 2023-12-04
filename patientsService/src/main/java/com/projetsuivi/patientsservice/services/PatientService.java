@@ -1,10 +1,13 @@
 package com.projetsuivi.patientsservice.services;
 
 import com.projetsuivi.patientsservice.dtos.PatientDto;
+import com.projetsuivi.patientsservice.enities.AdresseEntity;
 import com.projetsuivi.patientsservice.exception.ExceptionHandler;
 import com.projetsuivi.patientsservice.helpers.CycleAvoidingMappingContext;
+import com.projetsuivi.patientsservice.mappers.AdresseMapper;
 import com.projetsuivi.patientsservice.mappers.PatientMapper;
 import com.projetsuivi.patientsservice.models.Patient;
+import com.projetsuivi.patientsservice.repositories.AdresseRepository;
 import com.projetsuivi.patientsservice.repositories.PatientRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Log4j2
-@Transactional
 public class PatientService {
 
     PatientRepository patientRepository;
 
+    AdresseRepository adresseRepository;
+    AdresseMapper adresseMapper;
     PatientMapper patientMapper;
+
+    AdresseService adresseService;
     public List<Patient> findAllPatient() {
         try {
             log.info("findAllPatient");
@@ -53,12 +60,18 @@ public class PatientService {
     public Patient createPatient(PatientDto dto) {
         try {
             log.info("createPatient");
+            Optional<AdresseEntity> adresse = adresseRepository.findByNumberAndStreet(dto.getAdresse().getNumber(), dto.getAdresse().getStreet());
+            if(adresse.isEmpty()){
+                 dto.setAdresse(adresseService.createAdresse(adresseMapper.modelToDto(dto.getAdresse())));
+            } else{
+                dto.setAdresse(adresseMapper.entityToModel(adresse.get()));
+            }
             Patient patient = patientMapper.dtoToModel(dto);
             patient.setId(null);
             patientRepository.save(patientMapper.modelToEntity(patient));
             return patient;
         } catch (Exception e) {
-            log.error("Couldn't patient user: " + e.getMessage());
+            log.error("Couldn't create patient user: " + e.getMessage());
             throw new ExceptionHandler("We could not create your patient");
         }
     }

@@ -16,7 +16,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @Slf4j
-@CrossOrigin("*")
 @RequestMapping("api")
 public class LoginController {
 
@@ -30,7 +29,6 @@ public class LoginController {
     }
 
 
-    @CrossOrigin("*")
     @PostMapping("/token")
     public ResponseEntity<Void> token(Authentication authentication) {
         log.debug("Token requested for user : " + authentication.getName());
@@ -45,7 +43,6 @@ public class LoginController {
                 .build();
     }
 
-    @CrossOrigin("*")
     @PostMapping("/register")
     @Transactional
     public ResponseEntity<Void> registerUser(@RequestBody MyUser userDto) {
