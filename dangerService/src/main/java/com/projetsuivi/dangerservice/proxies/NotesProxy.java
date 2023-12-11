@@ -9,6 +9,8 @@ import java.util.List;
 
 @FeignClient(name = "notes-service", url = "localhost:9032")
 public interface NotesProxy {
+
+
     @GetMapping(value = "/notes/{id}")
     NotesDto getOneNote(@PathVariable("id") String id);
 

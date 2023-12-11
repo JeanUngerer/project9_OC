@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "patients-service", url = "localhost:9031")
+@FeignClient(name = "patients-service", url = "localhost:9032")
 public interface PatientProxy {
 
-    @GetMapping(value = "/patient/{id}")
+    @GetMapping(value = "patients/patient/{id}")
     PatientDto getOnePatient(@PathVariable("id") Long id);
 }
