@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class NotesService {
             log.info("createNotes");
             Notes notes = notesMapper.dtoToModel(dto);
             notes.set_id(null);
+            notes.setDateTime(LocalDateTime.now());
             notesRepository.save(notesMapper.modelToDocument(notes));
             return notes;
         } catch (Exception e) {
