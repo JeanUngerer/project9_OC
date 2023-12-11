@@ -41,7 +41,7 @@ public class NotesService {
 
     public List<Notes> findAllNotesByPatientId(Long id) {
         try {
-            log.info("findAllNotes");
+            log.info("findAllNotesByPatientId - id: " + id.toString());
             List<Notes> notesList = new ArrayList<Notes>();
             notesRepository.findAllNotesByPatientId(id).forEach(ct -> notesList.add(notesMapper.documentToModel(ct)));
             return  notesList;
@@ -72,7 +72,7 @@ public class NotesService {
             notesRepository.save(notesMapper.modelToDocument(notes));
             return notes;
         } catch (Exception e) {
-            log.error("Couldn't notes user: " + e.getMessage());
+            log.error("Couldn't create notes user: " + e.getMessage());
             throw new ExceptionHandler("We could not create your notes");
         }
     }
