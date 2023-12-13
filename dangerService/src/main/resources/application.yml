@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: danger-service
+  config:
+    import: configserver:http://app-config:9101
+
+
+

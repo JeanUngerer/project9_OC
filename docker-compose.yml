@@ -42,7 +42,7 @@ services:
     image: projet9_config
     restart: always
     ports:
-      - 9101
+      - 9101:9101
 
   app-eureka:
     image: projet9_eureka
@@ -65,15 +65,21 @@ services:
   app-danger:
     image: projet9_danger
     restart: always
+    ports:
+      - 9033:9033
     depends_on:
       - "app-config"
       - "app-eureka"
       - app-notes
       - app-patient
+    volumes:
+      - data:/danger
 
   app-notes:
     image: projet9_notes
     restart: always
+    ports:
+      - 9032:9032
     depends_on:
       - "app-config"
       - "app-eureka"
@@ -81,7 +87,9 @@ services:
 
   app-patient:
     image: projet9_patient
-    restart: "no"
+    restart: always
+    ports:
+      - 9031:9031
     depends_on:
       - "app-config"
       - "app-eureka"

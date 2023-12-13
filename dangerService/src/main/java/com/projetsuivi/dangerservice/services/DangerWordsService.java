@@ -61,23 +61,36 @@ public class DangerWordsService {
         // Extract all trigger words from the notes
         List<String> triggerWords = allNotes.stream()
                 .map(Notes::getNote)
-                .flatMap(note -> Arrays.stream(note.split("\\s+"))).toList();
+                .flatMap(note -> Arrays.stream(note.split("\\s+")))
+                .filter(word -> Arrays.stream(DangerWords.values()).anyMatch(dangerWords -> word == dangerWords.getValue() ))
+                .toList();
 
+        log.info("Trigger words list : " + triggerWords);
+        System.out.println("Trigger words list : " + triggerWords);
         // Calculate danger status based on conditions
         int numTriggerWords = triggerWords.size();
+        log.info("Trigger words list size : " + numTriggerWords);
+        System.out.println("Trigger words list size : " + numTriggerWords);
         int age = LocalDateTime.now().getYear() - patient.getBirthdate().getYear();
+        log.info("patient : " + patient.toString());
+        System.out.println("patient : " + patient.toString());
+        log.info("all notes : " + allNotes.toString());
+        System.out.println("all notes : " + allNotes.toString());
+        log.info("patient age : " + age);
+        System.out.println("patient age : " + age);
         Genras gender = patient.getGenra();
-
-        String dangerStatus = null;
+        log.info("patient gender : " + gender);
+        System.out.println("patient gender : " + gender);
+        String dangerStatus = DangerStatus.NONE.getValue();
 
         if (numTriggerWords == 0) {
             dangerStatus = DangerStatus.NONE.getValue();
         } else if (numTriggerWords >= 2 && numTriggerWords <= 5 && age > 30) {
             dangerStatus = DangerStatus.BORDERLINE.getValue();
-        } else if (age < 30 && ((gender == Genras.M && numTriggerWords >= 3) || (gender == Genras.F && numTriggerWords >= 4))
+        } else if (age < 30 && ((gender == Genras.M && numTriggerWords >= 3 && numTriggerWords < 5) || (gender == Genras.F && numTriggerWords >= 4&& numTriggerWords < 7))
                 || (age >= 30 && (numTriggerWords == 6 || numTriggerWords == 7))) {
             dangerStatus = DangerStatus.INDANGER.getValue();
-        } else if (age >= 30 && numTriggerWords >= 8) {
+        } else if ((age > 30 && numTriggerWords >= 8) || (age <=30 && (gender == Genras.M && numTriggerWords >= 5) || (gender == Genras.F && numTriggerWords >= 7))) {
             dangerStatus = DangerStatus.EARLYONSET.getValue();
         }
 

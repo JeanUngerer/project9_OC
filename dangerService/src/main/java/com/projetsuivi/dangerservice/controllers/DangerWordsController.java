@@ -1,6 +1,7 @@
 package com.projetsuivi.dangerservice.controllers;
 
 
+import com.projetsuivi.dangerservice.dtos.StatusMessage;
 import com.projetsuivi.dangerservice.services.DangerWordsService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class DangerWordsController {
     private final DangerWordsService dangerWordsService;
 
     @GetMapping("/status/{id}")
-    public ResponseEntity<String> getDangerStatus(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(dangerWordsService.getDangerStatus(id));
+    public ResponseEntity<StatusMessage> getDangerStatus(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(new StatusMessage(dangerWordsService.getDangerStatus(id)));
     }
 }
