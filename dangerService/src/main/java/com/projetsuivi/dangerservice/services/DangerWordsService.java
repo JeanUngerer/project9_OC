@@ -69,22 +69,8 @@ public class DangerWordsService {
                 .filter(e -> e.getNote().toLowerCase().contains(dangerWord.toLowerCase()))
                 .count()).mapToInt(Long::intValue).sum();
 
-
-
-        log.info("All words list : " + allWords);
-        System.out.println("All words list : " + allWords);
-        log.info("Trigger words list size : " + numTriggerWords);
-        System.out.println("Trigger words list size : " + numTriggerWords);
         int age = LocalDateTime.now().getYear() - patient.getBirthdate().getYear();
-        log.info("patient : " + patient.toString());
-        System.out.println("patient : " + patient.toString());
-        log.info("all notes : " + allNotes.toString());
-        System.out.println("all notes : " + allNotes.toString());
-        log.info("patient age : " + age);
-        System.out.println("patient age : " + age);
         Genras gender = patient.getGenra();
-        log.info("patient gender : " + gender);
-        System.out.println("patient gender : " + gender);
         String dangerStatus = DangerStatus.NONE.getValue();
 
         if (numTriggerWords == 0) {
