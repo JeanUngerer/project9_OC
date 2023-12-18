@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,17 +61,18 @@ public class DangerWordsService {
         Patient patient = dangerWordsMapper.dtoToPatient(patientProxy.getOnePatient(patientId));
         List<Notes> allNotes = dangerWordsMapper.dtosToNotes(notesProxy.getNotesByPatientId(patientId));
 
-        // Extract all trigger words from the notes
-        List<String> triggerWords = allNotes.stream()
+        List<String> allWords = allNotes.stream()
                 .map(Notes::getNote)
-                .flatMap(note -> Arrays.stream(note.split("\\s+")))
-                .filter(word -> Arrays.stream(DangerWords.values()).anyMatch(dangerWords -> word == dangerWords.getValue() ))
-                .toList();
+                .flatMap(note -> Arrays.stream(note.split("\s+"))).toList();
 
-        log.info("Trigger words list : " + triggerWords);
-        System.out.println("Trigger words list : " + triggerWords);
-        // Calculate danger status based on conditions
-        int numTriggerWords = triggerWords.size();
+        int numTriggerWords = Arrays.stream(DangerWords.values()).map(DangerWords::getValue).map(dangerWord -> allNotes.stream()
+                .filter(e -> e.getNote().toLowerCase().contains(dangerWord.toLowerCase()))
+                .count()).mapToInt(Long::intValue).sum();
+
+
+
+        log.info("All words list : " + allWords);
+        System.out.println("All words list : " + allWords);
         log.info("Trigger words list size : " + numTriggerWords);
         System.out.println("Trigger words list size : " + numTriggerWords);
         int age = LocalDateTime.now().getYear() - patient.getBirthdate().getYear();
