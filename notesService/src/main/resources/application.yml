@@ -1,0 +1,26 @@
+
+spring:
+  application:
+    name: notes-service
+
+
+
+  config:
+    import: optional:configserver:http://app-config:9101
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  #Disable discovery
+  cloud:
+    discovery:
+      enabled: false
+
+    #Disable cloud config and config discovery
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+---
