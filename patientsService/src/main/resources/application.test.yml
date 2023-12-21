@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://mysql:3306/testing_patients?createDatabaseIfNotExist=true
+    username: root
+    password: admin1
+    driver-class-name: com.mysql.cj.jdbc.Driver
