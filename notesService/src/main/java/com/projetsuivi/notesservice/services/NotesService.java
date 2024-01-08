@@ -78,6 +78,7 @@ public class NotesService {
     }
     public Notes updateNotes(NotesDto dto) {
         try {
+            dto.setDateTime(LocalDateTime.now());
             log.info("updateNotes - id: " + dto.get_id().toString());
             Notes notes = notesMapper.documentToModel(notesRepository.findById(dto.get_id()).orElseThrow(()
                     -> new ExceptionHandler("We could not find your notes")));

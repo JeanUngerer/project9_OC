@@ -37,24 +37,6 @@ public class DangerServiceTests {
     private DangerWordsMapper dangerWordsMapper;
     private static DangerWordsService dangerWordsService;
 
-
-/*
-    @BeforeAll
-    private void initiateServices() {
-        List<NotesDto> notesProxyMockReturnList = new ArrayList<>();
-        notesProxyMockReturnList.add(new NotesDto("_id", 1L, LocalDateTime.now(), "the note"));
-
-        when(notesProxyMock.getNotesByPatientId(anyLong())).thenReturn(notesProxyMockReturnList);
-
-
-        when(patientProxyMock.getOnePatient(anyLong())).thenReturn(
-                new PatientDto(1l, "firstname", "lastname", LocalDateTime.now(), Genras.M,
-                        new Adresse(1L, 12, "daStreet", null), "0909090909"));
-
-
-        dangerWordsService = new DangerWordsService(notesProxyMock, patientProxyMock, dangerWordsMapper);
-    }
-*/
     @Test
     public void calculateDangerWordsNone() {
 
