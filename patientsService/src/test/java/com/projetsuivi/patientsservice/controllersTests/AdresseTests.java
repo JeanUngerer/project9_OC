@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -35,6 +38,13 @@ public class AdresseTests {
     AdresseRepository adresseRepository;
 
 
+
+    @Test
+    public void muhah(){
+        System.out.println("wiwiwiwiwiwiiwiw");
+
+        assertEquals(10, 10);
+    }
 
     @Test
     public void createAPI() throws Exception {

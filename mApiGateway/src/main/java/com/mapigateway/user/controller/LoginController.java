@@ -67,35 +67,6 @@ public class LoginController {
 
     }
 
-    /*
-
-    import io.reactivex.Observable;
-    import io.reactivex.disposables.Disposable;
-
-    public class Main {
-        public static void main(String[] args) {
-            // Créer un Observable (source de données)
-            Observable<String> observable = Observable.just("Hello", "World");
-
-            // S'abonner à l'Observable et obtenir un Disposable
-            Disposable disposable = observable.subscribe(
-                    // onNext
-                    item -> System.out.println("Received: " + item),
-                    // onError
-                    error -> System.err.println("Error: " + error),
-                    // onComplete
-                    () -> System.out.println("Complete")
-            );
-
-            // Vous pouvez utiliser le Disposable pour interrompre l'abonnement si nécessaire
-            // disposable.dispose();
-        }
-    }
-
-*/
-
-
-
     @GetMapping("/home")
     public String homeSweetHome(){
         return "Hi home !";

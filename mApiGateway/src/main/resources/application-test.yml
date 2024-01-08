@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  #Disable discovery
+  cloud:
+    discovery:
+      enabled: false
+
+    #Disable cloud config and config discovery
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  data:
+    mongodb:
+      authentication-database: admin
+      username: rootuser
+      password: rootpass
+      database: testing_gateway
+      port: 27017
+      host: mongodb
+
+server:
+  port:
+    8099
+logging:
+  file:
+    name: logs/logfile.log
+  pattern:
+    file: "%d %p %c{1.} [%t] %m%n"
