@@ -37,15 +37,6 @@ public class AdresseTests {
     @Autowired
     AdresseRepository adresseRepository;
 
-
-
-    @Test
-    public void muhah(){
-        System.out.println("wiwiwiwiwiwiiwiw");
-
-        assertEquals(10, 10);
-    }
-
     @Test
     public void createAPI() throws Exception {
 
@@ -70,7 +61,7 @@ public class AdresseTests {
         AdresseDto adresseDto = new AdresseDto(1l, 12, "dastreet", null);
 
         adresseService.createAdresse(adresseDto);
-        AdresseEntity adresseEntity = adresseRepository.findByNumberAndStreet(adresseDto.getNumber(), adresseDto.getStreet()).get();
+        AdresseEntity adresseEntity = adresseRepository.findByNumberAndStreet(adresseDto.getNumber(), adresseDto.getStreet()).stream().findFirst().get();
 
 
 
