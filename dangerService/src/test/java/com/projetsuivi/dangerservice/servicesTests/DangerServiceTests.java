@@ -136,11 +136,9 @@ public class DangerServiceTests {
 
         DangerWordsService dangerWordsService1 = new DangerWordsService(notesProxyMock, patientProxyMock, dangerWordsMapper);
 
-
         String result = dangerWordsService1.getDangerStatus(1l);
 
         assertEquals(DangerStatus.EARLYONSET.getValue(), result);
-
     }
 
 }

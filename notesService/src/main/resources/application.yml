@@ -23,4 +23,12 @@ spring:
       discovery:
         enabled: false
       enabled: false
+  data:
+    mongodb:
+      authentication-database: admin
+      username: rootuser
+      password: rootpass
+      database: testing_notes
+      port: 27017
+      host: mongodb
 ---
