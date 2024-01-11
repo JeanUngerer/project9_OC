@@ -58,10 +58,10 @@ public class AdresseTests {
     public void getAPI() throws Exception {
 
 
-        AdresseDto adresseDto = new AdresseDto(1l, 12, "dastreet", null);
+        AdresseDto adresseDto = new AdresseDto(1l, 123, "dastreetEEE", null);
 
         adresseService.createAdresse(adresseDto);
-        AdresseEntity adresseEntity = adresseRepository.findByNumberAndStreet(adresseDto.getNumber(), adresseDto.getStreet()).stream().findFirst().get();
+        AdresseEntity adresseEntity = adresseRepository.findByNumberAndStreet(adresseDto.getNumber(), adresseDto.getStreet()).get();
 
 
 
@@ -71,8 +71,8 @@ public class AdresseTests {
                 .andDo(print())
                 .andExpect(status().isOk()).andExpect(content()
                         .contentType("application/json"))
-                .andExpect(jsonPath("$.number").value(12))
-                .andExpect(jsonPath("$.street").value("dastreet"));
+                .andExpect(jsonPath("$.number").value(123))
+                .andExpect(jsonPath("$.street").value("dastreetEEE"));
     }
 
     @Test
