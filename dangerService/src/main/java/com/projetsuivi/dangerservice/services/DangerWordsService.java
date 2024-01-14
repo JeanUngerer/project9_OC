@@ -10,7 +10,6 @@ import com.projetsuivi.dangerservice.models.Patient;
 import com.projetsuivi.dangerservice.proxies.NotesProxy;
 import com.projetsuivi.dangerservice.proxies.PatientProxy;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 

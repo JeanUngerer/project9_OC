@@ -33,30 +33,7 @@ public class UserService implements ReactiveUserDetailsService {
 
     UserStandardRepository userRepository;
     UserMapper userMapper;
-/*
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("No user with that username"));
-        MyUser myUser = userMapper.entityToModel(userEntity);
-        List<SimpleGrantedAuthority> authi = new ArrayList<>();
-        authi.add(new SimpleGrantedAuthority(myUser.getRoles()));
-        return new User(myUser.getUserName(), myUser.getPassword(), authi);
-    }
-*/
-/*
 
-    public List<MyUser> getUsers() {
-        try {
-            log.info("getUsers");
-            List<UserEntity> users = userRepository.findAll();
-            return userMapper.entitiesToModel(users);
-        } catch (Exception e) {
-            log.error("Couldn't find all user: " + e.getMessage());
-            throw new ExceptionHandler("We could not find your users");
-
-        }
-    }
-*/
 
 
     public Mono<UserEntity> createUser(MyUser myUser) {
@@ -101,69 +78,10 @@ public class UserService implements ReactiveUserDetailsService {
     }
 
 
-/*
-    public MyUser getUserById(Long id) {
-        try {
-            log.info("getUserById - id: " + id.toString());
-            return userMapper.entityToModel(userRepository.findById(id));//.orElseThrow(()
-               //     -> new ExceptionHandler("We could not find your account")));
-        } catch (Exception e) {
-            log.error("Couldn't find user: " + e.getMessage());
-            throw new ExceptionHandler("We could not find your account");
-        }
-    }
-*/
-    /*
-    public MyUser getUserByEmail(String email) {
-        try {
-            log.info("getUserByEmail - email: " + email);
-            return userMapper.entityToModel(userRepository.findByEmail(email).orElseThrow(()
-                    -> new ExceptionHandler("We could not find your account")));
-        } catch (Exception e) {
-            log.error("Couldn't find user: " + e.getMessage());
-            throw new ExceptionHandler("We could not find your account");
-        }
-    }
-*/
-    /*
-    public MyUser getUserByUserName(String userName) {
-        try {
-            log.info("getUserByUserName - userName: " + userName);
-            MyUser mee =userMapper.entityToModel(userRepository.findByUserName(userName).orElseThrow(()
-                    -> new ExceptionHandler("We could not find your account")));
-            return userMapper.entityToModel(userRepository.findByUserName(userName).orElseThrow(()
-                    -> new ExceptionHandler("We could not find your account")));
-        } catch (Exception e) {
-            log.error("Couldn't find user: " + e.getMessage());
-            throw new ExceptionHandler("We could not find your account");
-        }
-    }
-*/
-    /*
-    public String deleteUser(Long id) {
-        try {
-            log.info("deleteUser - id: " + id.toString());
-            UserEntity userEntity = userRepository.findById(id).orElseThrow(()
-                    -> new ExceptionHandler("We could not find your account"));
-            userRepository.delete(userEntity);
-            return "Contact deleted";
-        } catch (Exception e) {
-            log.error("Couldn't delete user: " + e.getMessage());
-            throw new ExceptionHandler("We could not delete your account");
-        }
-    }
-*/
-
 
     @Override
     public Mono<UserDetails> findByUsername(String userName) {
-        /*
-        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("No user with that username"));
-        MyUser myUser = userMapper.entityToModel(userEntity);
-        List<SimpleGrantedAuthority> authi = new ArrayList<>();
-        authi.add(new SimpleGrantedAuthority(myUser.getRoles()));
 
-         */
         return userReactiveRepository.getByUserName(userName)
                 .map(user -> User
                         .withUsername(user.getUserName())
