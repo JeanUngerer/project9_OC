@@ -10,7 +10,6 @@ import com.projetsuivi.dangerservice.models.Patient;
 import com.projetsuivi.dangerservice.proxies.NotesProxy;
 import com.projetsuivi.dangerservice.proxies.PatientProxy;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -58,26 +56,26 @@ public class DangerWordsService {
         Patient patient = dangerWordsMapper.dtoToPatient(patientProxy.getOnePatient(patientId));
         List<Notes> allNotes = dangerWordsMapper.dtosToNotes(notesProxy.getNotesByPatientId(patientId));
 
-        // Extract all trigger words from the notes
-        List<String> triggerWords = allNotes.stream()
+        List<String> allWords = allNotes.stream()
                 .map(Notes::getNote)
-                .flatMap(note -> Arrays.stream(note.split("\\s+"))).toList();
+                .flatMap(note -> Arrays.stream(note.split("\s+"))).toList();
 
-        // Calculate danger status based on conditions
-        int numTriggerWords = triggerWords.size();
+        int numTriggerWords = Arrays.stream(DangerWords.values()).map(DangerWords::getValue).map(dangerWord -> allNotes.stream()
+                .filter(e -> e.getNote().toLowerCase().contains(dangerWord.toLowerCase()))
+                .count()).mapToInt(Long::intValue).sum();
+
         int age = LocalDateTime.now().getYear() - patient.getBirthdate().getYear();
         Genras gender = patient.getGenra();
-
-        String dangerStatus = null;
+        String dangerStatus = DangerStatus.NONE.getValue();
 
         if (numTriggerWords == 0) {
             dangerStatus = DangerStatus.NONE.getValue();
         } else if (numTriggerWords >= 2 && numTriggerWords <= 5 && age > 30) {
             dangerStatus = DangerStatus.BORDERLINE.getValue();
-        } else if (age < 30 && ((gender == Genras.M && numTriggerWords >= 3) || (gender == Genras.F && numTriggerWords >= 4))
+        } else if (age < 30 && ((gender == Genras.M && numTriggerWords >= 3 && numTriggerWords < 5) || (gender == Genras.F && numTriggerWords >= 4&& numTriggerWords < 7))
                 || (age >= 30 && (numTriggerWords == 6 || numTriggerWords == 7))) {
             dangerStatus = DangerStatus.INDANGER.getValue();
-        } else if (age >= 30 && numTriggerWords >= 8) {
+        } else if ((age > 30 && numTriggerWords >= 8) || (age <=30 && (gender == Genras.M && numTriggerWords >= 5) || (gender == Genras.F && numTriggerWords >= 7))) {
             dangerStatus = DangerStatus.EARLYONSET.getValue();
         }
 

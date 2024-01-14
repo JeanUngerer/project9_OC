@@ -1,0 +1,104 @@
+
+
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/dataMySql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017
+    volumes:
+      - data:/dataMongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rootuser
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+
+  app-config:
+    image: projet9_config
+    restart: always
+    ports:
+      - 9101:9101
+
+  app-eureka:
+    image: projet9_eureka
+    restart: always
+    ports:
+      - 9102:9102
+    depends_on:
+      - "app-config"
+
+  app-gateway:
+    image: projet9_gateway
+    restart: always
+    ports:
+      - 9004:9004
+    depends_on:
+      - "app-config"
+      - "app-eureka"
+      - "mongodb"
+
+  app-danger:
+    image: projet9_danger
+    restart: always
+    ports:
+      - 9033:9033
+    depends_on:
+      - "app-config"
+      - "app-eureka"
+      - app-notes
+      - app-patient
+    volumes:
+      - data:/danger
+
+  app-notes:
+    image: projet9_notes
+    restart: always
+    ports:
+      - 9032:9032
+    depends_on:
+      - "app-config"
+      - "app-eureka"
+      - "mongodb"
+
+  app-patient:
+    image: projet9_patient
+    restart: always
+    ports:
+      - 9031:9031
+    depends_on:
+      - "app-config"
+      - "app-eureka"
+      - mysql
+
+
+volumes:
+  data: {}
+
+networks:
+  default:
+    name: projet9_network

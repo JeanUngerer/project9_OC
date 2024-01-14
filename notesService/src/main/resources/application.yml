@@ -1,0 +1,34 @@
+
+spring:
+  application:
+    name: notes-service
+
+
+
+  config:
+    import: optional:configserver:http://app-config:9101
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  #Disable discovery
+  cloud:
+    discovery:
+      enabled: false
+
+    #Disable cloud config and config discovery
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  data:
+    mongodb:
+      authentication-database: admin
+      username: rootuser
+      password: rootpass
+      database: testing_notes
+      port: 27017
+      host: mongodb
+---

@@ -10,9 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.Disposable;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @Slf4j
+@RequestMapping("api")
 public class LoginController {
 
     private final TokenService tokenService;
@@ -39,16 +43,29 @@ public class LoginController {
                 .build();
     }
 
-    @PutMapping("/register")
+    @PostMapping("/register")
     @Transactional
-    public ResponseEntity<Void> registerUser(MyUser userDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody MyUser userDto) {
 
-        userService.createUser(userDto);
-        log.debug("registered user : " + userDto.getLogin());
+        AtomicReference<Boolean> created = new AtomicReference<>(true);
 
-        return ResponseEntity.ok().build();
+        Disposable disposable = userService.createUser(userDto).subscribe(item -> {
+            if(item == null){
+                created.set(false);
+            }
+
+            log.debug("registered user : " + item);
+        });
+        disposable.dispose();
+
+        if(created.get()){
+            return ResponseEntity.ok().build();
+        }
+
+        return (ResponseEntity<Void>) ResponseEntity.badRequest();
+
+
     }
-
 
 
 

@@ -1,0 +1,25 @@
+
+spring:
+  application:
+    name: danger-service
+
+  #Disable discovery
+  cloud:
+    discovery:
+      enabled: false
+
+  #Disable cloud config and config discovery
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+
+server:
+  port:
+    9043
+logging:
+  file:
+    name: logs/logfile.log
+  pattern:
+    file: "%d %p %c{1.} [%t] %m%n"
+

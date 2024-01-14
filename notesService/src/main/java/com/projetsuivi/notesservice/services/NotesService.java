@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class NotesService {
 
     public List<Notes> findAllNotesByPatientId(Long id) {
         try {
-            log.info("findAllNotes");
+            log.info("findAllNotesByPatientId - id: " + id.toString());
             List<Notes> notesList = new ArrayList<Notes>();
             notesRepository.findAllNotesByPatientId(id).forEach(ct -> notesList.add(notesMapper.documentToModel(ct)));
             return  notesList;
@@ -67,15 +68,17 @@ public class NotesService {
             log.info("createNotes");
             Notes notes = notesMapper.dtoToModel(dto);
             notes.set_id(null);
+            notes.setDateTime(LocalDateTime.now());
             notesRepository.save(notesMapper.modelToDocument(notes));
             return notes;
         } catch (Exception e) {
-            log.error("Couldn't notes user: " + e.getMessage());
+            log.error("Couldn't create notes user: " + e.getMessage());
             throw new ExceptionHandler("We could not create your notes");
         }
     }
     public Notes updateNotes(NotesDto dto) {
         try {
+            dto.setDateTime(LocalDateTime.now());
             log.info("updateNotes - id: " + dto.get_id().toString());
             Notes notes = notesMapper.documentToModel(notesRepository.findById(dto.get_id()).orElseThrow(()
                     -> new ExceptionHandler("We could not find your notes")));

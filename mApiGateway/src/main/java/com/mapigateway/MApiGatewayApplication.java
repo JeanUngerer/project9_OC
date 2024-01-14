@@ -30,24 +30,6 @@ public class MApiGatewayApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //users.createUser(new MyUser(null, "mailadmin.com", "usernameAdmin", "usernameAdmin", "password", "firstName",
-          //      "lastName", "0606060606", "ROLE_ADMIN", 1000.)).subscribe();
-
-        //users.createUser(new MyUser(null, "mailuser.com", "usernameUser", "usernameUser", "password", "firstNameU",
-          //      "lastNameU", "0606060606", "ROLE_USER", 1000.)).subscribe();
     }
-
-/*
-    @Bean
-    CommandLineRunner commandLineRunner(UserService users, PasswordEncoder encoder) {
-        return args -> {
-            users.createUser(new MyUser(null, "mailadmin.com", "usernameAdmin", "usernameAdmin", "password", "firstName",
-                    "lastName", "0606060606", "ROLE_ADMIN", 1000.));
-
-            users.createUser(new MyUser(null, "mailuser.com", "usernameUser", "usernameUser", "password", "firstNameU",
-                    "lastNameU", "0606060606", "ROLE_USER", 1000.));
-        };
-    }
-*/
 
 }
