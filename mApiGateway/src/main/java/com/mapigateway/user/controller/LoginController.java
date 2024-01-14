@@ -67,8 +67,6 @@ public class LoginController {
 
     }
 
-
-
     @GetMapping("/home")
     public String homeSweetHome(){
         return "Hi home !";
