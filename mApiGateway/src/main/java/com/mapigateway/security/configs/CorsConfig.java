@@ -26,8 +26,10 @@ public class CorsConfig {
 
         configuration.setAllowCredentials(true);
 
-        configuration.setAllowedOrigins( Collections.singletonList( "http://localhost:4200" ) );
+        configuration.setAllowedOrigins( Collections.singletonList( "http://localhost" ) );
         configuration.addAllowedOrigin ( "http://localhost:9004" );
+        configuration.addAllowedOrigin ( "http://localhost:80" );
+        configuration.addAllowedOrigin ( "http://localhost:4200" );
 
 
         source.registerCorsConfiguration("/**",configuration);
